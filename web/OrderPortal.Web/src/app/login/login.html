@@ -1,0 +1,59 @@
+<div class="login-page">
+  <div class="login-card">
+
+    <div class="login-header">
+      <h1>Order Portal</h1>
+      <p>Enterprise Order Management</p>
+    </div>
+
+    <form (ngSubmit)="login()">
+
+      <div class="form-group">
+        <label for="username">Username</label>
+
+        <input id="username"
+               type="text"
+               name="username"
+               [(ngModel)]="username"
+               placeholder="Enter username"
+               autocomplete="username">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+
+        <input id="password"
+               type="password"
+               name="password"
+               [(ngModel)]="password"
+               placeholder="Enter password"
+               autocomplete="current-password">
+      </div>
+
+      @if (errorMessage) {
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+      }
+
+      <button type="submit"
+              [disabled]="isLoading">
+
+        @if (isLoading) {
+        Signing in...
+        } @else {
+        Sign In
+        }
+
+      </button>
+
+    </form>
+
+    <div class="demo-info">
+      <strong>Demo Account</strong>
+      <div>Username: admin</div>
+      <div>Password: Admin123!</div>
+    </div>
+
+  </div>
+</div>

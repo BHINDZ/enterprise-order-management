@@ -1,0 +1,35 @@
+ORKestra Portfolio - Setup Guide
+
+1. Install:
+   - .NET 8 SDK
+   - SQL Server Express or LocalDB
+   - Node.js LTS
+   - Visual Studio 2022 or VS Code
+   - Git
+
+2. Backend:
+   cd src/OrderPortal.Api
+   dotnet restore
+   dotnet run
+
+3. Open Swagger:
+   https://localhost:5001/swagger
+   (Use the HTTPS URL printed by dotnet run if the port differs.)
+
+4. Database:
+   The sample uses LocalDB. Before first use, create a migration:
+   dotnet tool install --global dotnet-ef
+   dotnet ef migrations add InitialCreate
+   dotnet ef database update
+
+5. Frontend:
+   The included frontend README contains Angular CLI commands.
+   Point Angular to the running API.
+
+6. GitHub:
+   Create a public repository named:
+   enterprise-order-api-portfolio
+   Commit the source, README and docs.
+
+7. IMPORTANT:
+   This is an independently created portfolio/demo project. Do not add proprietary source code, client names, credentials, screenshots, documents, or confidential information from previous employers.

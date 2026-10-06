@@ -1,0 +1,688 @@
+<!-- Notifications -->
+<div class="notification-container">
+  @for (notification of notifications; track notification.id) {
+  <div class="notification"
+       [class.notification-success]="notification.type === 'success'"
+       [class.notification-error]="notification.type === 'error'"
+       [class.notification-info]="notification.type === 'info'">
+    <div class="notification-icon">
+      @if (notification.type === 'success') {
+      ✓
+      } @else if (notification.type === 'error') {
+      !
+      } @else {
+      i
+      }
+    </div>
+
+    <div class="notification-content">
+      <div class="notification-title">
+        {{ notification.title }}
+      </div>
+
+      <div class="notification-message">
+        {{ notification.message }}
+      </div>
+    </div>
+
+    <button type="button"
+            class="notification-close"
+            (click)="removeNotification(notification.id)"
+            aria-label="Close notification">
+      ×
+    </button>
+  </div>
+  }
+</div>
+
+<div class="orders-page">
+
+  <!-- =========================================================
+       TOP NAVIGATION
+       ========================================================= -->
+
+  <header class="topbar">
+
+    <div class="brand">
+
+      <div class="brand-icon">
+        OM
+      </div>
+
+      <div class="brand-text">
+        <div class="brand-name">
+          Order Management
+        </div>
+
+        <div class="brand-subtitle">
+          Enterprise Integration Platform
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="topbar-right">
+
+      <div class="environment">
+        <span class="environment-dot"></span>
+        Demo Environment
+      </div>
+
+      <button type="button"
+              class="logout-button"
+              (click)="logout()">
+
+        <span>Logout</span>
+
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================================================
+       MAIN CONTENT
+       ========================================================= -->
+
+  <main class="dashboard">
+
+    <!-- Page heading -->
+
+    <section class="page-intro">
+
+      <div>
+
+        <div class="eyebrow">
+          ORDER OPERATIONS
+        </div>
+
+        <h1>
+          Order Dashboard
+        </h1>
+
+        <p>
+          Manage customer orders and monitor external API
+          integration activity.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         CREATE ORDER
+         ========================================================= -->
+
+    <section class="create-card">
+
+      <div class="card-heading">
+
+        <div class="card-heading-left">
+
+          <div class="section-icon">
+            +
+          </div>
+
+          <div>
+
+            <h2>
+              Create New Order
+            </h2>
+
+            <p>
+              Submit a new order to the external telecom system.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Success -->
+      @if (successMessage) {
+
+      <div class="alert alert-success">
+
+        <div class="alert-icon">
+          ✓
+        </div>
+
+        <div>
+          {{ successMessage }}
+        </div>
+
+      </div>
+
+      }
+
+
+      <!-- Error -->
+      @if (errorMessage) {
+
+      <div class="alert alert-error">
+
+        <div class="alert-icon">
+          !
+        </div>
+
+        <div>
+          {{ errorMessage }}
+        </div>
+
+      </div>
+
+      }
+
+
+      <form class="order-form"
+            (ngSubmit)="createOrder()">
+
+
+        <!-- Customer -->
+
+        <div class="field">
+
+          <label for="customerName">
+            Customer Name
+          </label>
+
+          <input id="customerName"
+                 name="customerName"
+                 type="text"
+                 [(ngModel)]="customerName"
+                 placeholder="e.g. Acme Corporation"
+                 autocomplete="off">
+
+        </div>
+
+
+        <!-- Product -->
+
+        <div class="field">
+
+          <label for="productCode">
+            Product
+          </label>
+
+          <select id="productCode"
+                  name="productCode"
+                  [(ngModel)]="productCode">
+
+            <option value="FIBER-500">
+              FIBER-500
+            </option>
+
+            <option value="MOBILE-UNLTD">
+              MOBILE-UNLTD
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- Quantity -->
+
+        <div class="field quantity-field">
+
+          <label for="quantity">
+            Quantity
+          </label>
+
+          <input id="quantity"
+                 name="quantity"
+                 type="number"
+                 min="1"
+                 [(ngModel)]="quantity">
+
+        </div>
+
+
+        <!-- Submit -->
+
+        <div class="submit-container">
+
+          <button type="submit"
+                  class="submit-button"
+                  [disabled]="isCreating">
+
+            @if (isCreating) {
+
+            <span class="spinner"></span>
+
+            <span>
+              Submitting...
+            </span>
+
+            } @else {
+
+            <span class="button-icon">
+              +
+            </span>
+
+            <span>
+              Submit Order
+            </span>
+
+            }
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+
+    <!-- =========================================================
+         LOADING
+         ========================================================= -->
+    @if (isLoading) {
+
+    <div class="loading-card">
+
+      <div class="loading-spinner"></div>
+
+      <span>
+        Loading orders...
+      </span>
+
+    </div>
+
+    }
+
+
+    <!-- =========================================================
+         DASHBOARD
+         ========================================================= -->
+    @if (!isLoading) {
+
+
+    <!-- =====================================================
+         KPI CARDS
+         ===================================================== -->
+
+    <section class="metrics-grid">
+
+
+      <!-- Total -->
+
+      <div class="metric-card">
+
+        <div class="metric-content">
+
+          <span class="metric-label">
+            Total Orders
+          </span>
+
+          <strong class="metric-value">
+            {{ totalOrders }}
+          </strong>
+
+          <span class="metric-description">
+            All orders in the system
+          </span>
+
+        </div>
+
+        <div class="metric-icon total-icon">
+          #
+        </div>
+
+      </div>
+
+
+      <!-- Submitted -->
+
+      <div class="metric-card">
+
+        <div class="metric-content">
+
+          <span class="metric-label">
+            Submitted
+          </span>
+
+          <strong class="metric-value">
+            {{ submittedOrders }}
+          </strong>
+
+          <span class="metric-description">
+            Successfully submitted
+          </span>
+
+        </div>
+
+        <div class="metric-icon submitted-icon">
+          ✓
+        </div>
+
+      </div>
+
+
+      <!-- Completed -->
+
+      <div class="metric-card">
+
+        <div class="metric-content">
+
+          <span class="metric-label">
+            Completed
+          </span>
+
+          <strong class="metric-value">
+            {{ completedOrders }}
+          </strong>
+
+          <span class="metric-description">
+            Successfully completed
+          </span>
+
+        </div>
+
+        <div class="metric-icon completed-icon">
+          ✓
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ORDERS TABLE
+         ===================================================== -->
+
+    <section class="orders-card">
+
+
+      <div class="orders-header">
+
+        <div>
+
+          <h2>
+            Orders
+          </h2>
+
+          <p>
+            Recent customer order activity
+          </p>
+
+        </div>
+
+
+        <button type="button"
+                class="refresh-button"
+                (click)="loadOrders()">
+
+          <span class="refresh-icon">
+            ↻
+          </span>
+
+          Refresh
+
+        </button>
+
+      </div>
+
+
+      <!-- Empty -->
+      @if (orders.length === 0) {
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          —
+        </div>
+
+        <h3>
+          No orders yet
+        </h3>
+
+        <p>
+          Create your first order using the form above.
+        </p>
+
+      </div>
+
+      }
+
+
+      <!-- Orders -->
+      @else {
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>
+                ORDER
+              </th>
+
+              <th>
+                CUSTOMER
+              </th>
+
+              <th>
+                PRODUCT
+              </th>
+
+              <th>
+                QTY
+              </th>
+
+              <th>
+                STATUS
+              </th>
+
+              <th>
+                EXTERNAL ORDER
+              </th>
+
+              <th>
+                CREATED
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            @for (order of orders; track order.id) {
+
+            <tr>
+
+              <td>
+
+                <span class="order-number">
+                  #{{ order.id }}
+                </span>
+
+              </td>
+
+
+              <td>
+
+                <div class="customer-cell">
+
+                  <div class="customer-avatar">
+                    {{ order.customerName.charAt(0).toUpperCase() }}
+                  </div>
+
+                  <span>
+                    {{ order.customerName }}
+                  </span>
+
+                </div>
+
+              </td>
+
+
+              <td>
+
+                <span class="product-code">
+                  {{ order.productCode }}
+                </span>
+
+              </td>
+
+
+              <td>
+
+                <span class="quantity">
+                  {{ order.quantity }}
+                </span>
+
+              </td>
+
+
+              <td>
+
+                @if (order.status === 1) {
+
+                <span class="status-badge submitted">
+                  <span class="status-dot"></span>
+                  Submitted
+                </span>
+
+                } @else if (order.status === 2) {
+
+                <span class="status-badge processing">
+                  <span class="status-dot"></span>
+                  Processing
+                </span>
+
+                } @else if (order.status === 3) {
+
+                <span class="status-badge completed">
+                  <span class="status-dot"></span>
+                  Completed
+                </span>
+
+                } @else if (order.status === 4) {
+
+                <span class="status-badge failed">
+                  <span class="status-dot"></span>
+                  Failed
+                </span>
+
+                } @else {
+
+                <span class="status-badge pending">
+                  <span class="status-dot"></span>
+                  Pending
+                </span>
+
+                }
+
+              </td>
+
+
+              <td>
+
+                @if (order.externalOrderId) {
+
+                <span class="external-id">
+                  {{ order.externalOrderId }}
+                </span>
+
+                } @else {
+
+                <span class="no-value">
+                  —
+                </span>
+
+                }
+
+              </td>
+
+
+              <td>
+
+                <span class="created-date">
+                  {{ order.createdUtc | date:'MMM d, y, h:mm a' }}
+                </span>
+
+              </td>
+
+            </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      }
+
+    </section>
+
+
+    <!-- =====================================================
+         INTEGRATION FOOTER
+         ===================================================== -->
+
+    <div class="integration-info">
+
+      <div class="integration-status">
+
+        <span class="integration-dot"></span>
+
+        <strong>
+          API Integration Active
+        </strong>
+
+      </div>
+
+      <span class="integration-divider">
+        |
+      </span>
+
+      <span>
+        ASP.NET Core
+      </span>
+
+      <span class="integration-divider">
+        |
+      </span>
+
+      <span>
+        Angular
+      </span>
+
+      <span class="integration-divider">
+        |
+      </span>
+
+      <span>
+        SQL Server
+      </span>
+
+      <span class="integration-divider">
+        |
+      </span>
+
+      <span>
+        REST / JSON
+      </span>
+
+    </div>
+
+    }
+
+  </main>
+
+</div>

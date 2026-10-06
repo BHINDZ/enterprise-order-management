@@ -1,0 +1,44 @@
+# .NET
+bin/
+obj/
+.vs/
+*.user
+*.suo
+
+# Test results
+TestResults/
+
+# Angular / Node
+node_modules/
+dist/
+.angular/
+.nx/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Secrets
+secrets.json
+
+# Local databases
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+*.log
+logs/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Certificates
+*.pfx
+*.pem
