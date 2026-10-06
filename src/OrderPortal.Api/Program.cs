@@ -99,8 +99,16 @@ var app = builder.Build();
 // This allows the hosted application to initialize the MonsterASP database.
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<OrderDbContext>();
-    db.Database.Migrate();
+    try
+    {
+        var db = scope.ServiceProvider.GetRequiredService<OrderDbContext>();
+        db.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("DATABASE MIGRATION FAILED:");
+        Console.WriteLine(ex.ToString());
+    }
 }
 
 
