@@ -18,7 +18,13 @@ export interface LoginResponse {
 export class AuthService {
   private readonly http = inject(HttpClient);
 
-  private readonly apiUrl = 'https://localhost:63705/api';
+  //private readonly apiUrl = 'https://localhost:63705/api';
+
+  private readonly apiUrl =
+    window.location.hostname === 'localhost'
+      ? 'https://localhost:63705/api'
+      : '/api';
+
 
   login(request: LoginRequest): Observable<LoginResponse> {
     return this.http

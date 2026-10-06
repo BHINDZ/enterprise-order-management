@@ -9,6 +9,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 var jwtKey = builder.Configuration["Jwt:Key"]
     ?? throw new InvalidOperationException("JWT key is not configured.");
 
@@ -87,12 +88,21 @@ builder.Services.AddHttpClient("WebhookClient");
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Angular", policy =>
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins("http://localhost:4200", "https://orkestra-order-portal.runasp.net")
               .AllowAnyHeader()
               .AllowAnyMethod());
 });
 
 var app = builder.Build();
+
+// Apply pending EF Core migrations.
+// This allows the hosted application to initialize the MonsterASP database.
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<OrderDbContext>();
+    db.Database.Migrate();
+}
+
 
 app.UseExceptionHandler(exceptionApp =>
 {
@@ -117,12 +127,17 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.UseCors("Angular");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapFallbackToFile("index.html");
 
 app.Run();
 
