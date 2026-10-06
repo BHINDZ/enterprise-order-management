@@ -24,7 +24,7 @@ export interface CreateOrderRequest {
 export class OrderService {
   private readonly http = inject(HttpClient);
 
-  private readonly apiUrl = 'https://localhost:63705/api/Orders';
+  private readonly apiUrl = '/api/Orders';
 
   getOrders(): Observable<Order[]> {
     return this.http.get<Order[]>(this.apiUrl);
