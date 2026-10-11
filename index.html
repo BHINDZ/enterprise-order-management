@@ -12,7 +12,7 @@
     <style>
         :root {
             --bg: #0b1120;
-            --bg-soft: #111827;
+            --bg-soft: #111827;-
             --card: #151e2e;
             --card-hover: #1a2638;
             --text: #f8fafc;
@@ -566,6 +566,7 @@
 
             <div class="nav-links">
                 <a href="#project">Project</a>
+                <a href="#service-desk">Service Desk</a>
                 <a href="#architecture">Architecture</a>
                 <a href="#skills">Skills</a>
                 <a href="#about">About</a>
@@ -604,6 +605,13 @@
                            target="_blank"
                            rel="noopener noreferrer">
                             🚀 Live Demo ↗
+                        </a>
+
+                        <a class="button button-secondary"
+                            href="https://enterprise-service-desk.runasp.net/app/"
+                            target="_blank"
+                            rel="noopener noreferrer">
+                                🎫 Service Desk Demo ↗
                         </a>
 
                         <a class="button button-secondary"
@@ -752,6 +760,92 @@
 
             </div>
         </section>
+
+        
+<!-- ENTERPRISE SERVICE DESK -->
+
+<section id="service-desk">
+    <div class="container">
+
+        <div class="section-header">
+            <div class="section-label">Featured Project · 02</div>
+
+            <h2 class="section-title">
+                Enterprise Service Desk
+            </h2>
+
+            <p class="section-description">
+                A deployed service-request management application
+                demonstrating full-stack development, REST API
+                integration, database persistence, and request lifecycle
+                management.
+            </p>
+        </div>
+
+        <div class="project">
+
+            <div class="project-main">
+                <h3>Service Request Management</h3>
+
+                <p>
+                    A live enterprise-style dashboard for creating,
+                    viewing, editing, and deleting service requests,
+                    with request counts, priority breakdowns, and
+                    status tracking.
+                </p>
+
+                <div class="project-badges">
+                    <span class="badge">Angular 22</span>
+                    <span class="badge">ASP.NET Core .NET 8</span>
+                    <span class="badge">REST API</span>
+                    <span class="badge">Entity Framework Core</span>
+                    <span class="badge">SQL Server</span>
+                    <span class="badge">HTTPS</span>
+                </div>
+
+                <ul class="feature-list">
+                    <li>Create service requests</li>
+                    <li>View persisted requests</li>
+                    <li>Edit existing requests</li>
+                    <li>Delete requests</li>
+                    <li>Track request status</li>
+                    <li>View priority breakdown</li>
+                    <li>Monitor dashboard totals</li>
+                    <li>Deploy frontend and API</li>
+                </ul>
+
+                <div class="hero-actions">
+                    <a class="button button-primary"
+                       href="https://enterprise-service-desk.runasp.net/app/"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        🚀 Launch Service Desk ↗
+                    </a>
+
+                    <a class="button button-secondary"
+                       href="https://enterprise-service-desk.runasp.net/api/requests"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        View API Response ↗
+                    </a>
+                </div>
+            </div>
+
+            <aside class="project-side">
+                <h4>Application Highlights</h4>
+
+                <ul>
+                    <li>Angular frontend hosted over HTTPS.</li>
+                    <li>ASP.NET Core API deployed separately from the UI.</li>
+                    <li>SQL Server persistence through Entity Framework Core.</li>
+                    <li>Create, read, update, and delete operations verified manually.</li>
+                    <li>Dashboard displays request totals, priorities, and statuses.</li>
+                </ul>
+            </aside>
+
+        </div>
+    </div>
+</section>
 
 
         <!-- ARCHITECTURE -->
